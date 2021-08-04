@@ -1,0 +1,1 @@
+# activerecord-tidb-adapter
