@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'activerecord_tidb_adapter'
+require 'activerecord-tidb-adapter'
 
 require 'minitest/autorun'
