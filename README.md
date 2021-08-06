@@ -21,6 +21,27 @@ Or install it yourself as:
 
 ## Usage
 
+database.yml
+
+```yml
+default: &default
+  adapter: tidb
+  encoding: utf8mb4
+  collation: utf8mb4_general_ci
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: 127.0.0.1
+  port: 4000
+  variables:
+    tidb_enable_noop_functions: ON
+  username: root
+  password:
+
+development:
+  <<: *default
+  database: activerecord_tidb_adapter_demo_development
+
+```
+
 * demo repo with rails 6.1.4: https://github.com/hooopo/activerecord-tidb-adapter-demo
 
 ## Development
