@@ -63,6 +63,12 @@ module ActiveRecord
           repeatable_read:  "REPEATABLE READ"
         }
       end
+
+      def self.database_exists?(config)
+        !!ActiveRecord::Base.tidb_connection(config)
+      rescue ActiveRecord::NoDatabaseError
+        false
+      end
     end
   end
 end
