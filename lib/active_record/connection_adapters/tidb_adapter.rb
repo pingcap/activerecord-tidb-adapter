@@ -32,6 +32,37 @@ module ActiveRecord
   module ConnectionAdapters
     class TidbAdapter < Mysql2Adapter
       ADAPTER_NAME = 'Tidb'
+
+      def supports_savepoints?
+        false
+      end
+
+      def supports_foreign_keys?
+        false
+      end
+
+      def supports_bulk_alter?
+        false
+      end
+
+      def supports_advisory_locks?
+        false
+      end
+
+      def supports_optimizer_hints?
+        false
+      end
+
+      def supports_json?
+        true
+      end
+
+      def transaction_isolation_levels
+        {
+          read_committed:   "READ COMMITTED",
+          repeatable_read:  "REPEATABLE READ"
+        }
+      end
     end
   end
 end
