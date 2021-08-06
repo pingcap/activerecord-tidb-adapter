@@ -21,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+* demo repo with rails 6.1.4: https://github.com/hooopo/activerecord-tidb-adapter-demo
 
 ## Development
 
