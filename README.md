@@ -21,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-database.yml
+config/database.yml
 
 ```yml
 default: &default
