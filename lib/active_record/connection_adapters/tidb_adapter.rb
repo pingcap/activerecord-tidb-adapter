@@ -50,18 +50,46 @@ module ActiveRecord
       end
 
       def supports_optimizer_hints?
-        false
+        true
       end
 
       def supports_json?
         true
       end
 
+      def supports_index_sort_order?
+        # TODO: check TiDB version
+        true
+      end
+
+      def supports_expression_index?
+        true
+      end
+
+      def supports_common_table_expressions?
+        true
+      end
+
       def transaction_isolation_levels
         {
-          read_committed:   "READ COMMITTED",
-          repeatable_read:  "REPEATABLE READ"
+          read_committed: 'READ COMMITTED',
+          repeatable_read: 'REPEATABLE READ'
         }
+      end
+
+      def initialize(connection, logger, conn_params, config)
+        super(connection, logger, conn_params, config)
+
+        tidb_version_string = query_value('select version()')
+        @tidb_version = tidb_version_string[/TiDB-v(.*?)-/, 1]
+      end
+
+      def tidb_version_string
+        @tidb_version
+      end
+
+      def tidb_version
+        Version.new(tidb_version_string)
       end
 
       def self.database_exists?(config)
