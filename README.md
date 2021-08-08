@@ -49,12 +49,12 @@ development:
 Install [tiup](https://github.com/pingcap/tiup)
 
 ```shell
-curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+$ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 ```
 Starting TiDB playground
 
-```
-tiup playground  nightly
+```shell
+$ tiup playground  nightly
 ```
 
 ## Development
