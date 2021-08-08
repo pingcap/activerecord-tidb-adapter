@@ -67,7 +67,11 @@ module ActiveRecord
       end
 
       def supports_common_table_expressions?
-        true
+        if tidb_version >= '5.1.0'
+          true
+        else
+          false
+        end
       end
 
       def transaction_isolation_levels
@@ -81,7 +85,7 @@ module ActiveRecord
         super(connection, logger, conn_params, config)
 
         tidb_version_string = query_value('select version()')
-        @tidb_version = tidb_version_string[/TiDB-v(.*?)-/, 1]
+        @tidb_version = tidb_version_string[/TiDB-v([0-9\.]+)/, 1]
       end
 
       def tidb_version_string
