@@ -32,6 +32,75 @@ module ActiveRecord
   module ConnectionAdapters
     class TidbAdapter < Mysql2Adapter
       ADAPTER_NAME = 'Tidb'
+
+      def supports_savepoints?
+        false
+      end
+
+      def supports_foreign_keys?
+        false
+      end
+
+      def supports_bulk_alter?
+        false
+      end
+
+      def supports_advisory_locks?
+        false
+      end
+
+      def supports_optimizer_hints?
+        true
+      end
+
+      def supports_json?
+        true
+      end
+
+      def supports_index_sort_order?
+        # TODO: check TiDB version
+        true
+      end
+
+      def supports_expression_index?
+        true
+      end
+
+      def supports_common_table_expressions?
+        if tidb_version >= '5.1.0'
+          true
+        else
+          false
+        end
+      end
+
+      def transaction_isolation_levels
+        {
+          read_committed: 'READ COMMITTED',
+          repeatable_read: 'REPEATABLE READ'
+        }
+      end
+
+      def initialize(connection, logger, conn_params, config)
+        super(connection, logger, conn_params, config)
+
+        tidb_version_string = query_value('select version()')
+        @tidb_version = tidb_version_string[/TiDB-v([0-9\.]+)/, 1]
+      end
+
+      def tidb_version_string
+        @tidb_version
+      end
+
+      def tidb_version
+        Version.new(tidb_version_string)
+      end
+
+      def self.database_exists?(config)
+        !!ActiveRecord::Base.tidb_connection(config)
+      rescue ActiveRecord::NoDatabaseError
+        false
+      end
     end
   end
 end
