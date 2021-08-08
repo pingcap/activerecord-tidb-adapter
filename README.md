@@ -44,6 +44,19 @@ development:
 
 * demo repo with rails 6.1.4: https://github.com/hooopo/activerecord-tidb-adapter-demo
 
+## Setting up local TiDB server
+
+Install tiup
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+```
+Starting TiDB playground
+
+```
+tiup playground  nightly
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
