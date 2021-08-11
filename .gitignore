@@ -6,3 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+/sqlnet.log
+/test/config.yml
+/test/db/
+/test/fixtures/*.sqlite*
+/debug.log

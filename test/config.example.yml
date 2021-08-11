@@ -1,0 +1,34 @@
+connections:
+  tidb:
+    arunit:
+      username: <%= ENV["MYSQL_USER"] || 'root' %>
+      port: <%= ENV["MYSQL_PORT"] || 4000 %>
+      encoding: utf8mb4
+      collation: utf8mb4_unicode_ci
+<% if ENV['MYSQL_PREPARED_STATEMENTS'] %>
+      prepared_statements: true
+<% end %>
+<% if ENV['MYSQL_HOST'] %>
+      host: <%= ENV['MYSQL_HOST'] || '127.0.0.1' %>
+<% end %>
+<% if ENV['tidb'] %>
+      variables:
+          tidb_enable_noop_functions: ON
+          tidb_skip_isolation_level_check: 1
+<% end %>
+    arunit2:
+      username: <%= ENV["MYSQL_USER"] || 'root' %>
+      port: <%= ENV["MYSQL_PORT"] || 4000 %>
+      encoding: utf8mb4
+      collation: utf8mb4_general_ci
+<% if ENV['MYSQL_PREPARED_STATEMENTS'] %>
+      prepared_statements: true
+<% end %>
+<% if ENV['MYSQL_HOST'] %>
+      host: <%= ENV['MYSQL_HOST'] || '127.0.0.1' %>
+<% end %>
+<% if ENV['tidb'] %>
+      variables:
+          tidb_enable_noop_functions: ON
+          tidb_skip_isolation_level_check: 1
+<% end %>

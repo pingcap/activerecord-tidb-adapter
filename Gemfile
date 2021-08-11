@@ -8,7 +8,16 @@ gemspec
 gem 'rake', '~> 13.0'
 
 gem 'minitest', '~> 5.0'
+gem 'minitest-excludes', '~> 2.0'
 
 gem 'pry'
 
 gem 'rubocop', '~> 1.18'
+
+gem 'rails', git: 'https://github.com/tidb-incubator/rails.git', branch: '6-1-stable'
+
+gem 'byebug', '~> 11.1'
+
+gem 'sqlite3', '~> 1.4'
+
+gem 'pg', '~> 1.2'
