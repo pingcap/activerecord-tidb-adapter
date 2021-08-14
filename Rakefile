@@ -15,7 +15,7 @@ namespace :test do
   Rake::TestTask.new('tidb') do |t|
     t.libs = ARTest::TiDB.test_load_paths
     t.test_files = test_files
-    t.warning = !!ENV['WARNING']
+    t.warning = !ENV['WARNING'].nil?
     t.verbose = false
   end
 

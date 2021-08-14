@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 TIDB_TEST_HELPER = 'test/cases/helper_tidb.rb'
 
 def test_files

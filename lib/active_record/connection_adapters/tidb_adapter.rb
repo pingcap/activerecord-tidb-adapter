@@ -4,6 +4,7 @@ require 'active_record/connection_adapters'
 require 'active_record/connection_adapters/mysql2_adapter'
 require 'active_record/connection_adapters/tidb/setup'
 require_relative '../../version'
+require_relative '../sequence'
 
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
 
@@ -31,6 +32,7 @@ module ActiveRecord
 
   module ConnectionAdapters
     class TidbAdapter < Mysql2Adapter
+      include ActiveRecord::Sequence::Adapter
       ADAPTER_NAME = 'Tidb'
 
       def supports_savepoints?
@@ -93,7 +95,7 @@ module ActiveRecord
       end
 
       def self.database_exists?(config)
-        !!ActiveRecord::Base.tidb_connection(config)
+        !ActiveRecord::Base.tidb_connection(config).nil?
       rescue ActiveRecord::NoDatabaseError
         false
       end

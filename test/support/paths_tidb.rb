@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module ARTest
   module TiDB
-    extend self
+    module_function
 
     def root_tidb
       File.expand_path File.join(File.dirname(__FILE__), '..', '..')
