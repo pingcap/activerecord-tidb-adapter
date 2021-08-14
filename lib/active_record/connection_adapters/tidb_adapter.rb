@@ -99,6 +99,34 @@ module ActiveRecord
       rescue ActiveRecord::NoDatabaseError
         false
       end
+
+      def new_column_from_field(_table_name, field)
+        type_metadata = fetch_type_metadata(field[:Type], field[:Extra])
+        default = field[:Default]
+        default_function = nil
+
+        if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(default)
+          default_function = default
+          default = nil
+        elsif type_metadata.extra == 'DEFAULT_GENERATED'
+          default = +"(#{default})" unless default.start_with?('(')
+          default_function = default
+          default = nil
+        elsif default.to_s =~ /nextval/i
+          default_function = default
+          default = nil
+        end
+
+        MySQL::Column.new(
+          field[:Field],
+          default,
+          type_metadata,
+          field[:Null] == 'YES',
+          default_function,
+          collation: field[:Collation],
+          comment: field[:Comment].presence
+        )
+      end
     end
   end
 end
