@@ -143,7 +143,7 @@ MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle e
 run tidb adapter tests
 
 ```
-MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:idb
+MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
 
 ```
 
