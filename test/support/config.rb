@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'pathname'
 require 'active_support/configuration_file'
@@ -12,11 +14,11 @@ module ARTest
     private
 
     def config_file
-      Pathname.new(ENV['ARCONFIG'] || ARTest::TiDB.test_root_tidb + '/config.yml')
+      Pathname.new(ENV['ARCONFIG'] || "#{ARTest::TiDB.test_root_tidb}/config.yml")
     end
 
     def read_config
-      FileUtils.cp ARTest::TiDB.test_root_tidb + '/config.example.yml', config_file unless config_file.exist?
+      FileUtils.cp "#{ARTest::TiDB.test_root_tidb}/config.example.yml", config_file unless config_file.exist?
 
       expand_config ActiveSupport::ConfigurationFile.parse(config_file)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'config'
 
 require 'stringio'
@@ -41,7 +43,7 @@ def in_memory_db?
 end
 
 def mysql_enforcing_gtid_consistency?
-  current_adapter?(:Mysql2Adapter) && 'ON' == ActiveRecord::Base.connection.show_variable('enforce_gtid_consistency')
+  current_adapter?(:Mysql2Adapter) && ActiveRecord::Base.connection.show_variable('enforce_gtid_consistency') == 'ON'
 end
 
 def supports_default_expression?
@@ -85,9 +87,9 @@ def with_timezone_config(cfg)
   old_awareness = ActiveRecord::Base.time_zone_aware_attributes
   old_zone = Time.zone
 
-  ActiveRecord::Base.default_timezone = cfg[:default] if cfg.has_key?(:default)
-  ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes] if cfg.has_key?(:aware_attributes)
-  Time.zone = cfg[:zone] if cfg.has_key?(:zone)
+  ActiveRecord::Base.default_timezone = cfg[:default] if cfg.key?(:default)
+  ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes] if cfg.key?(:aware_attributes)
+  Time.zone = cfg[:zone] if cfg.key?(:zone)
   yield
 ensure
   ActiveRecord::Base.default_timezone = old_default_zone
@@ -175,8 +177,8 @@ def load_schema
   p adapter_name
   adapter_specific_schema_file = SCHEMA_ROOT + "/#{adapter_name}_specific_schema.rb"
 
-  load SCHEMA_ROOT + '/schema.rb'
-  load SCHEMA_ROOT + '/mysql2_specific_schema.rb'
+  load "#{SCHEMA_ROOT}/schema.rb"
+  load "#{SCHEMA_ROOT}/mysql2_specific_schema.rb"
 
   load adapter_specific_schema_file if File.exist?(adapter_specific_schema_file)
 
