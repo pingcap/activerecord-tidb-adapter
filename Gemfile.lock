@@ -87,7 +87,7 @@ GIT
 PATH
   remote: .
   specs:
-    activerecord-tidb-adapter (0.3.0)
+    activerecord-tidb-adapter (0.4.0)
       activerecord (~> 6.1)
       mysql2
 

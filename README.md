@@ -90,7 +90,7 @@ This gem also adds a few helpers to interact with `SEQUENCE`
 
 ```ruby
 # Advance sequence and return new value
-ActiveRecord::Base.nextval("nembers")
+ActiveRecord::Base.nextval("numbers")
 
 # Return value most recently obtained with nextval for specified sequence.
 ActiveRecord::Base.lastval("numbers")
@@ -149,7 +149,7 @@ MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle e
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/activerecord-tidb-adapter.
+Bug reports and pull requests are welcome on GitHub at https://github.com/pingcap/activerecord-tidb-adapter.
 
 ## License
 
