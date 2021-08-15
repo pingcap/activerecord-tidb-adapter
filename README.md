@@ -68,7 +68,7 @@ class TestSeq < ActiveRecord::Migration[6.1]
 end
 ```
 
-Generatated SQL
+Generated DDL
 ```sql
 mysql> show create table orders_seq\G;
 *************************** 1. row ***************************
