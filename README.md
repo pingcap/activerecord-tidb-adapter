@@ -44,6 +44,62 @@ development:
 
 * demo repo with rails 6.1.4: https://github.com/hooopo/activerecord-tidb-adapter-demo
 
+## TiDB features
+
+**[Sequence](https://docs.pingcap.com/tidb/stable/sql-statement-create-sequence)**
+
+Sequence as primary key
+
+```ruby
+class TestSeq < ActiveRecord::Migration[6.1]
+  def up
+    # more options: increment, min_value, cycle, cache
+    create_sequence :orders_seq, start: 1024
+    create_table :orders, id: false do |t|
+      t.primary_key :id, default: -> { "nextval(orders_seq)" }
+      t.string :name
+    end
+  end
+
+  def down
+    drop_table :orders
+    drop_sequence :orders_seq
+  end
+end
+```
+
+Generatated SQL
+```sql
+mysql> show create table orders_seq\G;
+*************************** 1. row ***************************
+       Sequence: orders_seq
+Create Sequence: CREATE SEQUENCE `orders_seq` start with 1024 minvalue 1 maxvalue 9223372036854775806 increment by 1 nocache nocycle ENGINE=InnoDB
+
+mysql> show create table orders\G;
+*************************** 1. row ***************************
+       Table: orders
+Create Table: CREATE TABLE `orders` (
+  `id` bigint(20) NOT NULL DEFAULT nextval(`activerecord_tidb_adapter_demo_development`.`orders_seq`),
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+```
+
+This gem also adds a few helpers to interact with `SEQUENCE`
+
+```ruby
+# Advance sequence and return new value
+ActiveRecord::Base.nextval("nembers")
+
+# Return value most recently obtained with nextval for specified sequence.
+ActiveRecord::Base.lastval("numbers")
+
+# Set sequence's current value
+ActiveRecord::Base.setval("numbers", 1234)
+```
+
+
 ## Setting up local TiDB server
 
 Install [tiup](https://github.com/pingcap/tiup)
