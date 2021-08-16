@@ -140,11 +140,17 @@ MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle e
 
 ```
 
-run tidb adapter tests
+run tidb adapter tests and activerecord buildin tests
 
 ```
 MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
 
+```
+
+run **ONLY** tidb adapter tests using `ONLY_TEST_TIDB` env:
+
+```
+ONLY_TEST_TIDB=1 MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
 ```
 
 ## Contributing
