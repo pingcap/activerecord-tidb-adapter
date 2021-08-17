@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/tidb-incubator/rails.git
-  revision: e377e0dc16e9841a048ec7eab2666c06155b6a0c
+  revision: e2a3d3fb2ee24c709b9f32221fbcb66cfda5acfc
   branch: 6-1-stable
   specs:
     actioncable (6.1.4)
@@ -105,7 +105,7 @@ GEM
       activesupport (>= 5.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    loofah (2.11.0)
+    loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -118,6 +118,8 @@ GEM
       minitest (~> 5.0)
     mysql2 (0.5.3)
     nio4r (2.5.8)
+    nokogiri (1.12.3-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.12.3-x86_64-linux)
       racc (~> 1.4)
     parallel (1.20.1)
@@ -140,16 +142,16 @@ GEM
     rake (13.0.6)
     regexp_parser (2.1.1)
     rexml (3.2.5)
-    rubocop (1.18.4)
+    rubocop (1.19.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.8.0, < 2.0)
+      rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.8.0)
+    rubocop-ast (1.10.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     sprockets (4.0.2)
