@@ -9,9 +9,9 @@ require_relative '../sequence'
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
 
 module ActiveRecord
-  module ConnectionHandling #:nodoc:
+  module ConnectionHandling # :nodoc:
     # Establishes a connection to the database that's used by all Active Record objects.
-    def tidb_connection(config) #:nodoc:
+    def tidb_connection(config) # :nodoc:
       config = config.symbolize_keys
       config[:flags] ||= 0
 
@@ -99,6 +99,23 @@ module ActiveRecord
       rescue ActiveRecord::NoDatabaseError
         false
       end
+
+      def insert(arel, name = nil, pk = nil, id_value = nil, sequence_name = nil, binds = [])
+        sql, binds = to_sql_and_binds(arel, binds)
+        value = exec_insert(sql, name, binds, pk, sequence_name)
+        return id_value if id_value.present?
+
+        model = arel.ast.relation.instance_variable_get(:@klass)
+        pk_def = schema_cache.columns_hash(model.table_name)[pk]
+        if pk_def&.default_function && pk_def.default_function =~ /nextval/
+          query_value("SELECT #{pk_def.default_function.sub('nextval', 'lastval')}")
+        elsif model.sequence_name
+          ActiveRecord::Base.lastval(model.sequence_name)
+        else
+          last_inserted_id(value)
+        end
+      end
+      alias create insert
 
       def new_column_from_field(_table_name, field)
         type_metadata = fetch_type_metadata(field[:Type], field[:Extra])

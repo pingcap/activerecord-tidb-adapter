@@ -37,8 +37,13 @@ module ActiveRecord
 
       def drop_sequence(name)
         name = quote_column_name(name)
-        sql = "DROP SEQUENCE #{name}"
+        sql = "DROP SEQUENCE IF EXISTS #{name}"
         execute(sql)
+      end
+
+      def recreate_sequence(name, options = {})
+        drop_sequence(name)
+        create_sequence(name, options)
       end
     end
   end
