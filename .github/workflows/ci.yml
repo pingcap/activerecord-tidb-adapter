@@ -30,7 +30,13 @@ jobs:
       with:
         ruby-version: 2.7
         bundler-cache: true
-    - run: MYSQL_USER=root  MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build && MYSQL_USER=root tidb=1 ARCONN=tidb bundle exec rake test:tidb
+    - run: env
+    - run: MYSQL_USER=root MYSQL_HOST=0.0.0.0 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
       env:
-        MYSQL_HOST: tidb
+        MYSQL_HOST: 0.0.0.0
+        MYSQL_PORT: ${{ job.services.tidb.ports[4000] }}
+
+    - run: MYSQL_USER=root MYSQL_HOST=0.0.0.0 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+      env:
+        MYSQL_HOST: 0.0.0.0
         MYSQL_PORT: ${{ job.services.tidb.ports[4000] }}
