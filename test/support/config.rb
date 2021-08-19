@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'pathname'
-require 'active_support/configuration_file'
+require_relative 'configuration_file'
 require_relative 'paths_tidb'
 
 module ARTest
