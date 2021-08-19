@@ -8,8 +8,12 @@ TiDB adapter for ActiveRecord 5 and 6. This is a lightweight extension of the my
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activerecord-tidb-adapter'
+gem 'activerecord-tidb-adapter', '~> 6.1.0'
 ```
+
+If you're using Rails 5.2, use the 5.2.x versions of this gem.
+
+If you're using Rails 6.1, use the 6.1.x versions of this gem.
 
 And then execute:
 
