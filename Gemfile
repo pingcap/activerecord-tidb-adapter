@@ -21,3 +21,7 @@ gem 'byebug', '~> 11.1'
 gem 'sqlite3', '~> 1.4'
 
 gem 'pg', '~> 1.2'
+
+gem "mocha", "~> 1.13"
+
+gem "bcrypt", "~> 3.1"
