@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-require 'config'
+require "config"
 
-require 'stringio'
+require "stringio"
 
-require 'active_record'
-require 'cases/test_case'
-require 'active_support/dependencies'
-require 'active_support/logger'
-require 'active_support/core_ext/kernel/singleton_class'
+require "active_record"
+require "cases/test_case"
+require "active_support/dependencies"
+require "active_support/logger"
 
-require 'support/config'
-require 'support/connection'
-require 'minitest/excludes'
+require "support/config"
+require "support/connection"
 
 # TODO: Move all these random hacks into the ARTest namespace and into the support/ dir
 
@@ -28,7 +26,7 @@ I18n.enforce_available_locales = false
 ARTest.connect
 
 # Quote "type" if it's a reserved word for the current connection.
-QUOTED_TYPE = ActiveRecord::Base.connection.quote_column_name('type')
+QUOTED_TYPE = ActiveRecord::Base.connection.quote_column_name("type")
 
 def current_adapter?(*types)
   types.any? do |type|
@@ -39,45 +37,26 @@ end
 
 def in_memory_db?
   current_adapter?(:SQLite3Adapter) &&
-    ActiveRecord::Base.connection_pool.db_config.database == ':memory:'
+  ActiveRecord::Base.connection_pool.spec.config[:database] == ":memory:"
+end
+
+def subsecond_precision_supported?
+  ActiveRecord::Base.connection.supports_datetime_with_precision?
 end
 
 def mysql_enforcing_gtid_consistency?
-  current_adapter?(:Mysql2Adapter) && ActiveRecord::Base.connection.show_variable('enforce_gtid_consistency') == 'ON'
+  current_adapter?(:Mysql2Adapter) && "ON" == ActiveRecord::Base.connection.show_variable("enforce_gtid_consistency")
 end
 
-def supports_default_expression?
-  if current_adapter?(:PostgreSQLAdapter)
-    true
-  elsif current_adapter?(:Mysql2Adapter)
-    conn = ActiveRecord::Base.connection
-    !conn.mariadb? && conn.database_version >= '8.0.13'
-  end
+def supports_savepoints?
+  ActiveRecord::Base.connection.supports_savepoints?
 end
 
-%w[
-  supports_savepoints?
-  supports_partial_index?
-  supports_partitioned_indexes?
-  supports_expression_index?
-  supports_insert_returning?
-  supports_insert_on_duplicate_skip?
-  supports_insert_on_duplicate_update?
-  supports_insert_conflict_target?
-  supports_optimizer_hints?
-  supports_datetime_with_precision?
-].each do |method_name|
-  define_method method_name do
-    ActiveRecord::Base.connection.public_send(method_name)
-  end
-end
-
-def with_env_tz(new_tz = 'US/Eastern')
-  old_tz = ENV['TZ']
-  ENV['TZ'] = new_tz
+def with_env_tz(new_tz = "US/Eastern")
+  old_tz, ENV["TZ"] = ENV["TZ"], new_tz
   yield
 ensure
-  old_tz ? ENV['TZ'] = old_tz : ENV.delete('TZ')
+  old_tz ? ENV["TZ"] = old_tz : ENV.delete("TZ")
 end
 
 def with_timezone_config(cfg)
@@ -87,9 +66,15 @@ def with_timezone_config(cfg)
   old_awareness = ActiveRecord::Base.time_zone_aware_attributes
   old_zone = Time.zone
 
-  ActiveRecord::Base.default_timezone = cfg[:default] if cfg.key?(:default)
-  ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes] if cfg.key?(:aware_attributes)
-  Time.zone = cfg[:zone] if cfg.key?(:zone)
+  if cfg.has_key?(:default)
+    ActiveRecord::Base.default_timezone = cfg[:default]
+  end
+  if cfg.has_key?(:aware_attributes)
+    ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes]
+  end
+  if cfg.has_key?(:zone)
+    Time.zone = cfg[:zone]
+  end
   yield
 ensure
   ActiveRecord::Base.default_timezone = old_default_zone
@@ -103,27 +88,27 @@ EXPECTED_DEFAULT_TIMEZONE = :utc
 EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES = false
 def verify_default_timezone_config
   if Time.zone != EXPECTED_ZONE
-    warn <<~MSG
-      \n#{self}
-          Global state `Time.zone` was leaked.
-            Expected: #{EXPECTED_ZONE}
-            Got: #{Time.zone}
+    $stderr.puts <<-MSG
+\n#{self}
+    Global state `Time.zone` was leaked.
+      Expected: #{EXPECTED_ZONE}
+      Got: #{Time.zone}
     MSG
   end
   if ActiveRecord::Base.default_timezone != EXPECTED_DEFAULT_TIMEZONE
-    warn <<~MSG
-      \n#{self}
-          Global state `ActiveRecord::Base.default_timezone` was leaked.
-            Expected: #{EXPECTED_DEFAULT_TIMEZONE}
-            Got: #{ActiveRecord::Base.default_timezone}
+    $stderr.puts <<-MSG
+\n#{self}
+    Global state `ActiveRecord::Base.default_timezone` was leaked.
+      Expected: #{EXPECTED_DEFAULT_TIMEZONE}
+      Got: #{ActiveRecord::Base.default_timezone}
     MSG
   end
   if ActiveRecord::Base.time_zone_aware_attributes != EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES
-    warn <<~MSG
-      \n#{self}
-          Global state `ActiveRecord::Base.time_zone_aware_attributes` was leaked.
-            Expected: #{EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES}
-            Got: #{ActiveRecord::Base.time_zone_aware_attributes}
+    $stderr.puts <<-MSG
+\n#{self}
+    Global state `ActiveRecord::Base.time_zone_aware_attributes` was leaked.
+      Expected: #{EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES}
+      Got: #{ActiveRecord::Base.time_zone_aware_attributes}
     MSG
   end
 end
@@ -143,29 +128,6 @@ def disable_extension!(extension, connection)
 
   connection.disable_extension extension
   connection.reconnect!
-end
-
-def clean_up_legacy_connection_handlers
-  handler = ActiveRecord::Base.default_connection_handler
-  ActiveRecord::Base.connection_handlers = {}
-
-  handler.connection_pool_names.each do |name|
-    next if ['ActiveRecord::Base', 'ARUnit2Model', 'Contact', 'ContactSti', 'FirstAbstractClass',
-             'SecondAbstractClass'].include?(name)
-
-    handler.send(:owner_to_pool_manager).delete(name)
-  end
-end
-
-def clean_up_connection_handler
-  handler = ActiveRecord::Base.connection_handler
-  handler.instance_variable_get(:@owner_to_pool_manager).each do |_owner, pool_manager|
-    pool_manager.role_names.each do |role_name|
-      next if role_name == ActiveRecord::Base.default_role
-
-      pool_manager.remove_role(role_name)
-    end
-  end
 end
 
 def load_schema
@@ -190,14 +152,15 @@ end
 load_schema
 
 class SQLSubscriber
-  attr_reader :logged, :payloads
+  attr_reader :logged
+  attr_reader :payloads
 
   def initialize
     @logged = []
     @payloads = []
   end
 
-  def start(_name, _id, payload)
+  def start(name, id, payload)
     @payloads << payload
     @logged << [payload[:sql].squish, payload[:name], payload[:binds]]
   end
@@ -208,15 +171,17 @@ end
 module InTimeZone
   private
 
-  def in_time_zone(zone)
-    old_zone  = Time.zone
-    old_tz    = ActiveRecord::Base.time_zone_aware_attributes
+    def in_time_zone(zone)
+      old_zone  = Time.zone
+      old_tz    = ActiveRecord::Base.time_zone_aware_attributes
 
-    Time.zone = zone ? ActiveSupport::TimeZone[zone] : nil
-    ActiveRecord::Base.time_zone_aware_attributes = !zone.nil?
-    yield
-  ensure
-    Time.zone = old_zone
-    ActiveRecord::Base.time_zone_aware_attributes = old_tz
-  end
+      Time.zone = zone ? ActiveSupport::TimeZone[zone] : nil
+      ActiveRecord::Base.time_zone_aware_attributes = !zone.nil?
+      yield
+    ensure
+      Time.zone = old_zone
+      ActiveRecord::Base.time_zone_aware_attributes = old_tz
+    end
 end
+
+require "mocha/setup" # FIXME: stop using mocha

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_record/connection_adapters'
 require 'active_record/connection_adapters/mysql2_adapter'
 require 'active_record/connection_adapters/tidb/setup'
 require_relative '../../version'
@@ -30,7 +29,27 @@ module ActiveRecord
     end
   end
 
+  
+
   module ConnectionAdapters
+    class Mysql2Adapter < AbstractMysqlAdapter
+      ER_BAD_DB_ERROR = 1049
+      ADAPTER_NAME = "Mysql2"
+
+      include MySQL::DatabaseStatements
+
+      class << self
+        def new_client(config)
+          Mysql2::Client.new(config)
+        rescue Mysql2::Error => error
+          if error.error_number == ConnectionAdapters::Mysql2Adapter::ER_BAD_DB_ERROR
+            raise ActiveRecord::NoDatabaseError
+          else
+            raise ActiveRecord::ConnectionNotEstablished, error.message
+          end
+        end
+      end
+    end
     class TidbAdapter < Mysql2Adapter
       include ActiveRecord::Sequence::Adapter
       ADAPTER_NAME = 'Tidb'
