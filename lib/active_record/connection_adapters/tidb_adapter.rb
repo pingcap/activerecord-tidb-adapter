@@ -50,6 +50,7 @@ module ActiveRecord
         end
       end
     end
+
     class TidbAdapter < Mysql2Adapter
       include ActiveRecord::Sequence::Adapter
       ADAPTER_NAME = 'Tidb'
@@ -136,30 +137,25 @@ module ActiveRecord
       end
       alias create insert
 
-      def new_column_from_field(_table_name, field)
+      def new_column_from_field(table_name, field)
         type_metadata = fetch_type_metadata(field[:Type], field[:Extra])
-        default = field[:Default]
-        default_function = nil
-
-        if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(default)
-          default_function = default
-          default = nil
-        elsif type_metadata.extra == 'DEFAULT_GENERATED'
-          default = +"(#{default})" unless default.start_with?('(')
-          default_function = default
-          default = nil
+        if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(field[:Default])
+          default, default_function = nil, field[:Default]
         elsif default.to_s =~ /nextval/i
           default_function = default
           default = nil
+        else
+          default, default_function = field[:Default], nil
         end
 
         MySQL::Column.new(
           field[:Field],
           default,
           type_metadata,
-          field[:Null] == 'YES',
+          field[:Null] == "YES",
+          table_name,
           default_function,
-          collation: field[:Collation],
+          field[:Collation],
           comment: field[:Comment].presence
         )
       end
