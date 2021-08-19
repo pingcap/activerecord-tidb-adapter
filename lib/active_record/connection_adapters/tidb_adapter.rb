@@ -125,12 +125,10 @@ module ActiveRecord
         value = exec_insert(sql, name, binds, pk, sequence_name)
         return id_value if id_value.present?
 
-        model = arel.ast.relation.instance_variable_get(:@klass)
-        pk_def = schema_cache.columns_hash(model.table_name)[pk]
+        table_name = arel.ast.relation.table_name
+        pk_def = schema_cache.columns_hash(table_name)[pk]
         if pk_def&.default_function && pk_def.default_function =~ /nextval/
           query_value("SELECT #{pk_def.default_function.sub('nextval', 'lastval')}")
-        elsif model.sequence_name
-          ActiveRecord::Base.lastval(model.sequence_name)
         else
           last_inserted_id(value)
         end
