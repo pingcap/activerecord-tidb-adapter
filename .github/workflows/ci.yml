@@ -15,10 +15,9 @@ on:
       - 'docs/**'
 
 jobs:
-  build:
+  vm-job:
     if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
     runs-on: ubuntu-latest
-    container: ruby:2.7
     services:
       tidb:
         image: hawkingrei/tind:v5.1.0
@@ -27,7 +26,8 @@ jobs:
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v2
-    - run: bundle install
-    - run: apt-get update && apt-get install -y default-mysql-client 
-    - run: MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
-    - run: MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
