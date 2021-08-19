@@ -18,6 +18,7 @@ jobs:
   build:
     if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
     runs-on: ubuntu-latest
+    container: ruby:2.7
     services:
       tidb:
         image: hawkingrei/tind:v5.1.0
@@ -26,17 +27,6 @@ jobs:
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7
-        bundler-cache: true
-    - run: env
-    - run: MYSQL_USER=root MYSQL_HOST=0.0.0.0 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
-      env:
-        MYSQL_HOST: 0.0.0.0
-        MYSQL_PORT: ${{ job.services.tidb.ports[4000] }}
-
-    - run: MYSQL_USER=root MYSQL_HOST=0.0.0.0 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
-      env:
-        MYSQL_HOST: 0.0.0.0
-        MYSQL_PORT: ${{ job.services.tidb.ports[4000] }}
+    - run: bundle install
+    - run: MYSQL_USER=root MYSQL_HOST=tidb MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: MYSQL_USER=root MYSQL_HOST=tidb MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
