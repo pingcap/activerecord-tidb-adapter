@@ -28,5 +28,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: bundle install
-    - run: MYSQL_USER=root MYSQL_HOST=tidb MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
-    - run: MYSQL_USER=root MYSQL_HOST=tidb MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+    - run: apt-get update && apt-get install -y default-mysql-client 
+    - run: MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
