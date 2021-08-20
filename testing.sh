@@ -11,4 +11,4 @@ echo "Bundle install"
 bundle install
 
 echo "Setup database for testing"
-tidb=1 ARCONN=tidb bundle exec rake db:tidb:build && tidb=1 ARCONN=tidb bundle exec rake test:tidb
+tidb=1 ARCONN=tidb bundle exec rake db:tidb:rebuild && tidb=1 ARCONN=tidb bundle exec rake test:tidb
