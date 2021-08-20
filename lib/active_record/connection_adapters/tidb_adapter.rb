@@ -65,7 +65,7 @@ module ActiveRecord
       end
 
       def supports_expression_index?
-        true
+        false
       end
 
       def supports_common_table_expressions?

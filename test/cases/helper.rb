@@ -55,6 +55,15 @@ def supports_default_expression?
   end
 end
 
+def supports_text_column_with_default?
+  if current_adapter?(:Mysql2Adapter)
+    conn = ActiveRecord::Base.connection
+    conn.mariadb? && conn.database_version >= "10.2.1"
+  else
+    true
+  end
+end
+
 %w[
   supports_savepoints?
   supports_partial_index?
@@ -66,7 +75,6 @@ end
   supports_insert_conflict_target?
   supports_optimizer_hints?
   supports_datetime_with_precision?
-  supports_text_column_with_default?
 ].each do |method_name|
   define_method method_name do
     ActiveRecord::Base.connection.public_send(method_name)
