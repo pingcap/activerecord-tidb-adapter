@@ -109,8 +109,6 @@ module ActiveRecord
         pk_def = schema_cache.columns_hash(model.table_name)[pk]
         if pk_def&.default_function && pk_def.default_function =~ /nextval/
           query_value("SELECT #{pk_def.default_function.sub('nextval', 'lastval')}")
-        elsif model.sequence_name
-          ActiveRecord::Base.lastval(model.sequence_name)
         else
           last_inserted_id(value)
         end
