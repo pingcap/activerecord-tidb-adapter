@@ -1,4 +1,4 @@
-name: CI
+name: activerecord-tidb-adapter ci
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - 'docs/**'
 
 jobs:
-  tidb-v5.1.1:
+  tidb511:
     name: test_activerecord_tidb_v5.1.1
     runs-on: ubuntu-latest
     steps:
