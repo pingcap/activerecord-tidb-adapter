@@ -1,4 +1,5 @@
 # ActiveRecord TiDB Adapter
+[![Build status](https://badge.buildkite.com/2cc593ab1a36b95eeb063ebc5cbecb40492177c03800ef33a4.svg)](https://buildkite.com/hooopo/tidb-dot-5-1-dot-0-ar-tidb-adapter-dot-6-1-stable)
 
 TiDB adapter for ActiveRecord 5 and 6. This is a lightweight extension of the mysql2 adapter that establishes compatibility with [TiDB](https://github.com/pingcap/tidb).
 
@@ -10,6 +11,10 @@ Add this line to your application's Gemfile:
 ```ruby
 gem 'activerecord-tidb-adapter', "~> 6.1.0"
 ```
+
+If you're using Rails 5.2, use the 5.2.x versions of this gem.
+
+If you're using Rails 6.1, use the 6.1.x versions of this gem.
 
 And then execute:
 
