@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/pingcap/rails.git
-  revision: 7a3fbc5e103be80107fabc9e626cfc32e10e6e1c
+  revision: a1adbde17b229e9131d40787ee4342c1180afb36
   branch: 5-2-stable
   specs:
     actioncable (5.2.6)
