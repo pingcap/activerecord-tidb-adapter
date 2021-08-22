@@ -4,4 +4,4 @@ env:
 
 steps:
   - command: "testing.sh"
-    label: "Run TiDB ActiveRecord Adapter testing 6-1-stable"
+    label: "Run TiDB ActiveRecord Adapter testing 5-2-stable"
