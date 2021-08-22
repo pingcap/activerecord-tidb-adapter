@@ -121,21 +121,6 @@ module ActiveRecord
         false
       end
 
-      def insert(arel, name = nil, pk = nil, id_value = nil, sequence_name = nil, binds = [])
-        sql, binds = to_sql_and_binds(arel, binds)
-        value = exec_insert(sql, name, binds, pk, sequence_name)
-        return id_value if id_value.present?
-
-        table_name = arel.ast.relation.table_name
-        pk_def = schema_cache.columns_hash(table_name)[pk]
-        if pk_def&.default_function && pk_def.default_function =~ /nextval/
-          query_value("SELECT #{pk_def.default_function.sub('nextval', 'lastval')}")
-        else
-          last_inserted_id(value)
-        end
-      end
-      alias create insert
-
       def new_column_from_field(table_name, field)
         type_metadata = fetch_type_metadata(field[:Type], field[:Extra])
         if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(field[:Default])
