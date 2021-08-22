@@ -11,6 +11,7 @@ require "active_support/logger"
 
 require "support/config"
 require "support/connection"
+require 'minitest/excludes'
 
 # TODO: Move all these random hacks into the ARTest namespace and into the support/ dir
 
