@@ -1,5 +1,5 @@
 # ActiveRecord TiDB Adapter
-[![Build status](https://badge.buildkite.com/2cc593ab1a36b95eeb063ebc5cbecb40492177c03800ef33a4.svg)](https://buildkite.com/hooopo/tidb-dot-5-1-dot-0-ar-tidb-adapter-dot-6-1-stable)
+[![Build status](https://badge.buildkite.com/97f49abbb0391a342027826985552fba1131f6154b20986903.svg)](https://buildkite.com/hooopo/tidb-dot-5-1-dot-0-ar-tidb-adapter-dot-main)
 
 TiDB adapter for ActiveRecord 5 and 6. This is a lightweight extension of the mysql2 adapter that establishes compatibility with [TiDB](https://github.com/pingcap/tidb).
 
