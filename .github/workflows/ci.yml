@@ -3,13 +3,13 @@ name: activerecord-tidb-adapter ci
 on:
   push:
     branches:
-      - main
+      - 6-1-stable
     paths-ignore:
       - 'README*.md'
       - 'docs/**'
   pull_request:
     branches:
-      - main
+      - 6-1-stable
     paths-ignore:
       - 'README*.md'
       - 'docs/**'
