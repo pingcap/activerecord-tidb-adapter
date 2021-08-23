@@ -1,2 +1,3 @@
 exclude :test_exists_respects_association_scope, 'skip'
 exclude :test_collection_not_empty_after_building, 'skip'
+exclude :test_clearing_updates_counter_cache_when_inverse_counter_cache_is_a_symbol_with_dependent_destroy, 'skip'

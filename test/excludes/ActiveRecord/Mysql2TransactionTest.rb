@@ -1,0 +1,1 @@
+exclude :test_raises_StatementTimeout_when_statement_timeout_exceeded, 'skip'
