@@ -5,6 +5,7 @@ require 'active_record/connection_adapters/tidb/setup'
 require_relative '../../version'
 require_relative '../sequence'
 require_relative 'tidb/database_statements'
+require_relative 'tidb/schema_statements'
 
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
 
@@ -119,29 +120,6 @@ module ActiveRecord
         !ActiveRecord::Base.tidb_connection(config).nil?
       rescue ActiveRecord::NoDatabaseError
         false
-      end
-
-      def new_column_from_field(table_name, field)
-        type_metadata = fetch_type_metadata(field[:Type], field[:Extra])
-        if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(field[:Default])
-          default, default_function = nil, field[:Default]
-        elsif default.to_s =~ /nextval/i
-          default_function = default
-          default = nil
-        else
-          default, default_function = field[:Default], nil
-        end
-
-        MySQL::Column.new(
-          field[:Field],
-          default,
-          type_metadata,
-          field[:Null] == "YES",
-          table_name,
-          default_function,
-          field[:Collation],
-          comment: field[:Comment].presence
-        )
       end
     end
   end
