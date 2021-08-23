@@ -1,1 +1,2 @@
 exclude :test_raises_StatementTimeout_when_statement_timeout_exceeded, 'skip'
+exclude :test_raises_QueryCanceled_when_canceling_statement_due_to_user_request, 'skip'
