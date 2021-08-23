@@ -1,0 +1,3 @@
+exclude :test_only_call_after_commit_on_top_level_transactions, 'skip'
+exclude :test_only_call_after_rollback_on_records_rolled_back_to_a_savepoint_when_release_savepoint_fails, 'skip'
+exclude :test_only_call_after_rollback_on_records_rolled_back_to_a_savepoint, 'skip'

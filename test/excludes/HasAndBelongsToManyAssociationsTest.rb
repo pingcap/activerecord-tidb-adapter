@@ -1,0 +1,1 @@
+exclude :test_join_table_composite_primary_key_should_not_warn, 'skip'
