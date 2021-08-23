@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/pingcap/rails.git
-  revision: 7a3fbc5e103be80107fabc9e626cfc32e10e6e1c
+  revision: a1adbde17b229e9131d40787ee4342c1180afb36
   branch: 5-2-stable
   specs:
     actioncable (5.2.6)
@@ -67,7 +67,7 @@ GIT
 PATH
   remote: .
   specs:
-    activerecord-tidb-adapter (5.2.0)
+    activerecord-tidb-adapter (5.2.1)
       activerecord (~> 5.2)
       mysql2
 
@@ -101,8 +101,6 @@ GEM
     mocha (1.13.0)
     mysql2 (0.5.3)
     nio4r (2.5.8)
-    nokogiri (1.12.3-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.12.3-x86_64-linux)
       racc (~> 1.4)
     parallel (1.20.1)

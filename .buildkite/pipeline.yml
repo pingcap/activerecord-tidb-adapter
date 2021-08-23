@@ -1,0 +1,7 @@
+env:
+  MYSQL_HOST: 127.0.0.1
+  MYSQL_USER: root
+
+steps:
+  - command: "testing.sh"
+    label: "Run TiDB ActiveRecord Adapter testing 5-2-stable"
