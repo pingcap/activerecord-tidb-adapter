@@ -15,7 +15,7 @@ on:
       - 'docs/**'
 
 jobs:
-  build:
+  tidb510:
     if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
     runs-on: ubuntu-latest
     services:
@@ -24,6 +24,46 @@ jobs:
         options: --entrypoint /entrypoint.sh
         env:
           TIDB_VERSION: v5.1.0
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb503:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: hawkingrei/tind:v5.0.3
+        options: --entrypoint /entrypoint.sh
+        env:
+          TIDB_VERSION: v5.0.3
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_column_type = 1'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_column_type = 1'
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb511:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: hawkingrei/tind:v5.1.1
+        options: --entrypoint /entrypoint.sh
+        env:
+          TIDB_VERSION: v5.1.1
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v2
