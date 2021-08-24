@@ -1,0 +1,1 @@
+exclude :test_change_column, 'skip'
