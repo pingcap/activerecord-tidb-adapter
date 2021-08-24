@@ -1,0 +1,1 @@
+exclude "test_.protecting_encrypted_data_allows_db-queries_on_deterministic_attributes".to_sym, 'skip'
