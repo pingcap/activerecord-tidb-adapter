@@ -1,0 +1,1 @@
+exclude :test_pluck_in_relation, 'skip'
