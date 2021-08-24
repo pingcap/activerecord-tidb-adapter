@@ -1,4 +1,4 @@
-name: activerecord-tidb-adapter ci
+name: activerecord-tidb-adapter 6-1
 
 on:
   push:
