@@ -1,0 +1,1 @@
+exclude :test_pluck_auto_table_name_prefix, 'skip'

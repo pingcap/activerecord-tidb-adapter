@@ -1,8 +1,7 @@
 # ActiveRecord TiDB Adapter
 
+[![Gem Version](https://badge.fury.io/rb/activerecord-tidb-adapter.svg)](https://badge.fury.io/rb/activerecord-tidb-adapter)
 [![activerecord-tidb-adapter 7.0](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml)
-[![activerecord-tidb-adapter 6.1](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml/badge.svg?branch=6-1-stable)](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml)
-[![activerecord-tidb-adapter 5.2](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml/badge.svg?branch=5-2-stable)](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml)
 
 TiDB adapter for ActiveRecord 5.2, 6.1 and 7.0
 This is a lightweight extension of the mysql2 adapter that establishes compatibility with [TiDB](https://github.com/pingcap/tidb).
