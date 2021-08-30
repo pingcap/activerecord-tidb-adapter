@@ -62,8 +62,8 @@ module ActiveRecord
       end
 
       def supports_index_sort_order?
-        # TODO: check TiDB version
-        true
+        # https://github.com/pingcap/tidb/issues/2519 support is required
+        false
       end
 
       def supports_expression_index?
