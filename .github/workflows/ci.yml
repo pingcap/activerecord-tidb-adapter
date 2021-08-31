@@ -20,8 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: hawkingrei/tind:v5.1.0
-        options: --entrypoint /entrypoint.sh
+        image: hooopo/tidb-playground:v5.1.0
         env:
           TIDB_VERSION: v5.1.0
         ports: ["4000:4000"]
@@ -39,8 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: hawkingrei/tind:v5.0.3
-        options: --entrypoint /entrypoint.sh
+        image: hooopo/tidb-playground:v5.0.3
         env:
           TIDB_VERSION: v5.0.3
         ports: ["4000:4000"]
@@ -60,10 +58,27 @@ jobs:
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: hawkingrei/tind:v5.1.1
-        options: --entrypoint /entrypoint.sh
+        image: hooopo/tidb-playground:v5.1.1
         env:
           TIDB_VERSION: v5.1.1
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb520:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: hooopo/tidb-playground:v5.2.0
+        env:
+          TIDB_VERSION: v5.2.0
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v2
