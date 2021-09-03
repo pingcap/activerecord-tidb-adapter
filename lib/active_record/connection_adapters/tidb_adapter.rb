@@ -74,13 +74,6 @@ module ActiveRecord
         tidb_version >= '5.1.0'
       end
 
-      def transaction_isolation_levels
-        {
-          read_committed: 'READ COMMITTED',
-          repeatable_read: 'REPEATABLE READ'
-        }
-      end
-
       def initialize(connection, logger, conn_params, config)
         super(connection, logger, conn_params, config)
 

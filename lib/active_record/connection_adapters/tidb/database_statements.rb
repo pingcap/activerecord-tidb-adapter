@@ -15,4 +15,11 @@ ActiveRecord::ConnectionAdapters::DatabaseStatements.class_eval do
     end
   end
   alias create insert
+
+  def transaction_isolation_levels
+    {
+      read_committed: 'READ COMMITTED',
+      repeatable_read: 'REPEATABLE READ'
+     }
+   end
 end
