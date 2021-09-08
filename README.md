@@ -76,24 +76,6 @@ class TestSeq < ActiveRecord::Migration[6.1]
 end
 ```
 
-Generated DDL
-```sql
-mysql> show create table orders_seq\G;
-*************************** 1. row ***************************
-       Sequence: orders_seq
-Create Sequence: CREATE SEQUENCE `orders_seq` start with 1024 minvalue 1 maxvalue 9223372036854775806 increment by 1 nocache nocycle ENGINE=InnoDB
-
-mysql> show create table orders\G;
-*************************** 1. row ***************************
-       Table: orders
-Create Table: CREATE TABLE `orders` (
-  `id` bigint(20) NOT NULL DEFAULT nextval(`activerecord_tidb_adapter_demo_development`.`orders_seq`),
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
-
-```
-
 This gem also adds a few helpers to interact with `SEQUENCE`
 
 ```ruby
@@ -105,6 +87,41 @@ ActiveRecord::Base.lastval("numbers")
 
 # Set sequence's current value
 ActiveRecord::Base.setval("numbers", 1234)
+```
+
+**[CTE](https://docs.pingcap.com/tidb/dev/sql-statement-with#with)**
+
+```bash
+$ bundle add activerecord-cte
+
+```
+
+```ruby
+require 'activerecord/cte'
+
+Post
+  .with(posts_with_tags: "SELECT * FROM posts WHERE tags_count > 0")
+  .from("posts_with_tags AS posts")
+# WITH posts_with_tags AS (
+#   SELECT * FROM posts WHERE (tags_count > 0)
+# )
+# SELECT * FROM posts_with_tags AS posts
+
+Post
+  .with(posts_with_tags: "SELECT * FROM posts WHERE tags_count > 0")
+  .from("posts_with_tags AS posts")
+  .count
+
+# WITH posts_with_tags AS (
+#   SELECT * FROM posts WHERE (tags_count > 0)
+# )
+# SELECT COUNT(*) FROM posts_with_tags AS posts
+
+Post
+  .with(posts_with_tags: Post.where("tags_count > 0"))
+  .from("posts_with_tags AS posts")
+  .count
+
 ```
 
 
