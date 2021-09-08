@@ -89,11 +89,14 @@ PATH
   specs:
     activerecord-tidb-adapter (6.1.2)
       activerecord (~> 6.1)
+      activerecord-cte
       mysql2
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activerecord-cte (0.2.0)
+      activerecord
     ast (2.4.2)
     builder (3.2.4)
     byebug (11.1.3)

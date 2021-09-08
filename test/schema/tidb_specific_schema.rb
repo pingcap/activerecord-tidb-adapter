@@ -10,4 +10,11 @@ ActiveRecord::Schema.define do
     t.primary_key :id, null: false, default: -> { 'nextval(orders_seq)' }
     t.string :name
   end
+
+  create_table :tidb_posts, force: true do |t|
+    t.boolean :archived, default: false
+    t.integer :views_count
+    t.string :language, default: :en
+    t.timestamps
+  end
 end

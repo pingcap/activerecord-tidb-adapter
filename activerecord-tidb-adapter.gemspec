@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activerecord', '~> 6.1'
+  spec.add_dependency 'activerecord-cte'
   spec.add_dependency 'mysql2'
 
   # Uncomment to register a new dependency of your gem
