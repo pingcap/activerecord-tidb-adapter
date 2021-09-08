@@ -67,7 +67,12 @@ module ActiveRecord
       end
 
       def supports_expression_index?
-        false
+        sql = <<~SQL
+          SELECT VALUE 
+          FROM INFORMATION_SCHEMA.CLUSTER_CONFIG 
+          WHERE `KEY` = 'experimental.allow-expression-index' AND `TYPE` = 'tidb'
+        SQL
+        query_value(sql) == 'true'
       end
 
       def supports_common_table_expressions?
