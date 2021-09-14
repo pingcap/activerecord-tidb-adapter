@@ -46,6 +46,7 @@ module ActiveRecord
       end
 
       def supports_bulk_alter?
+        # https://github.com/pingcap/tidb/issues/14766 support is required
         false
       end
 
