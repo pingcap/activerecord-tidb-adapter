@@ -38,10 +38,12 @@ module ActiveRecord
       ADAPTER_NAME = 'Tidb'
 
       def supports_savepoints?
+        # https://github.com/pingcap/tidb/issues/6840 support is required
         false
       end
 
       def supports_foreign_keys?
+        # https://github.com/pingcap/tidb/issues/18209 support is required
         false
       end
 
@@ -51,6 +53,7 @@ module ActiveRecord
       end
 
       def supports_advisory_locks?
+        # https://github.com/pingcap/tidb/issues/14994 support is required
         false
       end
 
