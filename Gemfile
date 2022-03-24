@@ -23,3 +23,5 @@ gem 'sqlite3', '~> 1.4'
 gem 'pg', '~> 1.2'
 
 gem "benchmark-ips", "~> 2.9"
+
+gem "bcrypt"
