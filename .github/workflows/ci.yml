@@ -94,9 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: hooopo/tidb-playground:v5.3.0
+        image: hooopo/tidb-playground:v5.3.1
         env:
-          TIDB_VERSION: v5.3.0
+          TIDB_VERSION: v5.3.1
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v3
