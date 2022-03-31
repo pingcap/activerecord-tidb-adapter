@@ -110,6 +110,7 @@ module ActiveRecord
         default_function = nil
 
         if type_metadata.type == :datetime && /\ACURRENT_TIMESTAMP(?:\([0-6]?\))?\z/i.match?(default)
+          default = "#{default} ON UPDATE #{default}" if /on update CURRENT_TIMESTAMP/i.match?(field[:Extra])
           default_function = default
           default = nil
         elsif type_metadata.extra == 'DEFAULT_GENERATED'
