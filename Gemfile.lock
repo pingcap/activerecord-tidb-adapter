@@ -94,7 +94,7 @@ PATH
   remote: .
   specs:
     activerecord-tidb-adapter (7.0.0)
-      activerecord (~> 7.0.0)
+      activerecord (~> 7.0.1)
       mysql2
 
 GEM
@@ -210,4 +210,4 @@ DEPENDENCIES
   sqlite3 (~> 1.4)
 
 BUNDLED WITH
-   2.2.32
+   2.3.10
