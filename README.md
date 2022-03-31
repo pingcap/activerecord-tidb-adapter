@@ -12,12 +12,14 @@ This is a lightweight extension of the mysql2 adapter that establishes compatibi
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activerecord-tidb-adapter', '~> 6.1.0'
+gem 'activerecord-tidb-adapter', '~> 7.0.0'
 ```
 
 If you're using Rails 5.2, use the 5.2.x versions of this gem.
 
 If you're using Rails 6.1, use the 6.1.x versions of this gem.
+
+If you're using Rails 7.0, use the 7.0.x versions of this gem.
 
 And then execute:
 
