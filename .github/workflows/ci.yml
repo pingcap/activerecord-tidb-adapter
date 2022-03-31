@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+      - 7-0-stable
     paths-ignore:
       - 'README*.md'
       - 'docs/**'
   pull_request:
     branches:
       - main
+      - 7-0-stable
     paths-ignore:
       - 'README*.md'
       - 'docs/**'
