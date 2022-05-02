@@ -7,6 +7,8 @@ require_relative '../../version'
 require_relative '../sequence'
 require_relative 'tidb/schema_statements'
 require_relative 'tidb/database_statements'
+require_relative 'tidb/savepoints'
+require_relative 'tidb/transaction'
 
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
 
