@@ -14,7 +14,7 @@ gem 'pry'
 
 gem 'rubocop', '~> 1.18'
 
-gem 'rails', git: 'https://github.com/pingcap/rails.git', branch: '6-1-stable'
+gem 'rails', git: 'https://github.com/pingcap/rails.git', branch: '6-0-stable'
 
 gem 'byebug', '~> 11.1'
 
