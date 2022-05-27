@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require 'yaml'
+require 'erb'
 require 'fileutils'
 require 'pathname'
-require 'active_support/configuration_file'
 require_relative 'paths_tidb'
 
 module ARTest
@@ -20,7 +21,8 @@ module ARTest
     def read_config
       FileUtils.cp "#{ARTest::TiDB.test_root_tidb}/config.example.yml", config_file unless config_file.exist?
 
-      expand_config ActiveSupport::ConfigurationFile.parse(config_file)
+      erb = ERB.new(config_file.read)
+      expand_config(YAML.parse(erb.result(binding)).transform)
     end
 
     def expand_config(config)
