@@ -5,7 +5,9 @@ require 'active_record/connection_adapters/mysql2_adapter'
 require 'active_record/connection_adapters/tidb/setup'
 require_relative '../../version'
 require_relative '../sequence'
-require_relative 'tidb/schema_statements'
+require_relative 'tidb/schema_statements' unless tidb_version >= '5.2.0'
+# https://github.com/pingcap/tidb/issues/26110 has been fixed since TiDB 5.2.0 or higher
+# via https://github.com/pingcap/tidb/commit/1641b3411d663eb67464a34882a3f222b67cea8d
 require_relative 'tidb/database_statements'
 
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
