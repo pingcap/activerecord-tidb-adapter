@@ -55,14 +55,14 @@ jobs:
     - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
     - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
 
-  tidb523:
+  tidb524:
     if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: pingcap/tidb:v5.2.3
+        image: pingcap/tidb:v5.2.4
         env:
-          TIDB_VERSION: v5.2.3
+          TIDB_VERSION: v5.2.4
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v3
@@ -91,14 +91,14 @@ jobs:
     - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
     - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
 
-  tidb540:
+  tidb541:
     if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
     runs-on: ubuntu-latest
     services:
       tidb:
-        image: pingcap/tidb:v5.4.0
+        image: pingcap/tidb:v5.4.1
         env:
-          TIDB_VERSION: v5.4.0
+          TIDB_VERSION: v5.4.1
         ports: ["4000:4000"]
     steps:
     - uses: actions/checkout@v2
