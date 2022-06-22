@@ -143,4 +143,6 @@ jobs:
         ruby-version: 2.7
         bundler-cache: true
     - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
     - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
