@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/pingcap/rails.git
-  revision: 1e6072695919da1146ce26dd184c5e373e83b056
+  revision: a047e02979e2a528ac8934dbd05cd353a339bb4c
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -8,7 +8,7 @@ GIT
       activesupport (= 7.1.0.alpha)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-      zeitwerk (~> 2.5)
+      zeitwerk (~> 2.6)
     actionmailbox (7.1.0.alpha)
       actionpack (= 7.1.0.alpha)
       activejob (= 7.1.0.alpha)
@@ -32,7 +32,7 @@ GIT
     actionpack (7.1.0.alpha)
       actionview (= 7.1.0.alpha)
       activesupport (= 7.1.0.alpha)
-      rack (~> 2.0, >= 2.2.0)
+      rack (~> 2.0, >= 2.2.4)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
@@ -46,7 +46,7 @@ GIT
     actionview (7.1.0.alpha)
       activesupport (= 7.1.0.alpha)
       builder (~> 3.1)
-      erubi (~> 1.4)
+      erubi (~> 1.11)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
     activejob (7.1.0.alpha)
@@ -66,6 +66,7 @@ GIT
       mini_mime (>= 1.1.0)
     activesupport (7.1.0.alpha)
       concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
@@ -89,7 +90,7 @@ GIT
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
-      zeitwerk (~> 2.5)
+      zeitwerk (~> 2.6)
 
 PATH
   remote: .
@@ -108,14 +109,14 @@ GEM
     byebug (11.1.3)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
+    connection_pool (2.3.0)
     crass (1.0.6)
-    digest (3.1.0)
-    erubi (1.10.0)
+    erubi (1.11.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    loofah (2.17.0)
+    loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -123,26 +124,20 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.15.0)
+    minitest (5.16.3)
     minitest-excludes (2.0.1)
       minitest (~> 5.0)
     mysql2 (0.5.3)
-    net-imap (0.2.3)
-      digest
+    net-imap (0.3.1)
       net-protocol
-      strscan
-    net-pop (0.1.1)
-      digest
+    net-pop (0.1.2)
       net-protocol
-      timeout
     net-protocol (0.1.3)
       timeout
-    net-smtp (0.3.1)
-      digest
+    net-smtp (0.3.3)
       net-protocol
-      timeout
     nio4r (2.5.8)
-    nokogiri (1.13.4-x86_64-darwin)
+    nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     parallel (1.22.1)
     parser (3.1.2.0)
@@ -152,13 +147,13 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     racc (1.6.0)
-    rack (2.2.3)
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack (2.2.4)
+    rack-test (2.0.2)
+      rack (>= 1.3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     rainbow (3.1.1)
     rake (13.0.6)
@@ -177,19 +172,19 @@ GEM
       parser (>= 3.1.1.0)
     ruby-progressbar (1.11.0)
     sqlite3 (1.4.2)
-    strscan (3.0.1)
     thor (1.2.1)
-    timeout (0.2.0)
-    tzinfo (2.0.4)
+    timeout (0.3.0)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-darwin-22
 
 DEPENDENCIES
   activerecord-tidb-adapter!
