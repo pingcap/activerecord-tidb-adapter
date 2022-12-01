@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/pingcap/rails.git
-  revision: a047e02979e2a528ac8934dbd05cd353a339bb4c
-  branch: main
+  revision: a8f2a04bf2ec7aef8fe06678380f7e5a15e1e736
+  branch: remove_savepoint_patch
   specs:
     actioncable (7.1.0.alpha)
       actionpack (= 7.1.0.alpha)

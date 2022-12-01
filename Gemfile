@@ -14,7 +14,7 @@ gem 'pry'
 
 gem 'rubocop', '~> 1.18'
 
-gem 'rails', git: 'https://github.com/pingcap/rails.git', branch: 'main'
+gem 'rails', git: 'https://github.com/pingcap/rails.git', branch: 'remove_savepoint_patch'
 
 gem 'byebug', '~> 11.1'
 
