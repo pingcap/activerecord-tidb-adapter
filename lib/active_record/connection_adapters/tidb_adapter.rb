@@ -5,7 +5,6 @@ require 'active_record/connection_adapters/mysql2_adapter'
 require 'active_record/connection_adapters/tidb/setup'
 require_relative '../../version'
 require_relative '../sequence'
-require_relative 'tidb/schema_statements'
 require_relative 'tidb/database_statements'
 
 ActiveRecord::ConnectionAdapters::Tidb.initial_setup
