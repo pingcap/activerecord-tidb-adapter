@@ -3,6 +3,12 @@
 [![Gem Version](https://badge.fury.io/rb/activerecord-tidb-adapter.svg)](https://badge.fury.io/rb/activerecord-tidb-adapter)
 [![activerecord-tidb-adapter 7.0](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pingcap/activerecord-tidb-adapter/actions/workflows/ci.yml)
 
+⚠️ This Gem is not currently maintained. If you're looking to connect to TiDB serverless with a Rails application, follow our [TiDB serverless ruby connect example](https://github.com/hooopo/tidb-serverless-ruby-connect-example) 
+
+⚠️ Since this Gem is a solution for the compatibility issues left by the older versions (prior to 6.0) of TiDB, TiDB Cloud and TiDB serverless will always use the latest versions, so there is no need for additional adapters for integration. You can directly use ActiveRecord or the mysql2 gem.
+
+------
+
 TiDB adapter for ActiveRecord 5.2, 6.1 and 7.0
 This is a lightweight extension of the mysql2 adapter that establishes compatibility with [TiDB](https://github.com/pingcap/tidb).
 
