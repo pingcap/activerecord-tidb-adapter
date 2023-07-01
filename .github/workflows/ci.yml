@@ -90,3 +90,83 @@ jobs:
         bundler-cache: true
     - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
     - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb531:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: pingcap/tidb:v5.3.1
+        env:
+          TIDB_VERSION: v5.3.1
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb541:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: pingcap/tidb:v5.4.1
+        env:
+          TIDB_VERSION: v5.4.1
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb600:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: pingcap/tidb:v6.0.0
+        env:
+          TIDB_VERSION: v6.0.0
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
+
+  tidb610:
+    if: ${{ !contains(github.event.commits[0].message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    services:
+      tidb:
+        image: pingcap/tidb:v6.1.0
+        env:
+          TIDB_VERSION: v6.1.0
+        ports: ["4000:4000"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - run: sleep 30 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake db:tidb:build
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: mysql --host 127.0.0.1 --database activerecord_unittest2 --port 4000 -u root -e 'set @@global.tidb_enable_change_multi_schema = on'
+    - run: sleep 10 && MYSQL_USER=root MYSQL_HOST=127.0.0.1 MYSQL_PORT=4000 tidb=1 ARCONN=tidb bundle exec rake test:tidb
