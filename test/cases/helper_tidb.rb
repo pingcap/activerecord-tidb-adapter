@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# concurrent-ruby >= 1.3.5 no longer requires logger, and ActiveSupport
+# before 7.0.8.7 references ::Logger without requiring it.
+require 'logger'
 require 'bundler/setup'
 Bundler.require :development
 
