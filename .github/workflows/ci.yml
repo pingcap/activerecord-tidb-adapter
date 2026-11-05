@@ -61,8 +61,8 @@ jobs:
     - name: Run one leaking test with SQL log (DIAGNOSTIC)
       env:
         DIAG_SQL: '1'
-        TEST_FILES_AR: cases/associations/has_many_through_associations_test.rb
-        TESTOPTS: '-v -n /test_associate_with_create_and_valid_options|test_associate_with_create_and_invalid_options/'
+        TEST_FILES_AR: test/cases/associations/has_many_through_associations_test.rb
+        TESTOPTS: '-v -n /test_associate_with_create_and_(in)?valid_options/'
       run: bundle exec rake test:tidb
     - name: Contracts after the run
       if: always()
