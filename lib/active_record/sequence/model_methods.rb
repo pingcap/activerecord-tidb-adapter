@@ -15,6 +15,7 @@ module ActiveRecord
 
       def setval(name, value)
         name = connection.quote_column_name(name)
+        value = value.is_a?(String) ? Integer(value, 10) : Integer(value)
         connection.query_value("SELECT setval(#{name}, #{value})")
       end
     end
