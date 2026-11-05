@@ -29,6 +29,14 @@ jobs:
           - v5.1.1
           - v5.2.0
     name: tidb ${{ matrix.tidb-version }}
+    services:
+      tidb:
+        # tiup playground with real PD/TiKV; the binaries are downloaded at
+        # container start, so wait for the port below instead of sleeping.
+        image: hooopo/tidb-playground:${{ matrix.tidb-version }}
+        env:
+          TIDB_VERSION: ${{ matrix.tidb-version }}
+        ports: ["4000:4000"]
     env:
       MYSQL_USER: root
       MYSQL_HOST: 127.0.0.1
@@ -37,28 +45,20 @@ jobs:
       ARCONN: tidb
     steps:
     - uses: actions/checkout@v6
-    - name: Start TiDB
-      run: |
-        docker run -d --name tidb -p 4000:4000 \
-          -v "$PWD/config.toml:/config.toml:ro" \
-          pingcap/tidb:${{ matrix.tidb-version }} --config=/config.toml
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
         bundler-cache: true
     - name: Wait for TiDB
       run: |
-        for i in $(seq 1 60); do
+        for i in $(seq 1 90); do
           mysql --host 127.0.0.1 --port 4000 -u root -e 'select tidb_version()' && exit 0
-          sleep 2
+          sleep 5
         done
-        docker logs tidb
+        docker logs "${{ job.services.tidb.id }}"
         exit 1
     - run: bundle exec rake db:tidb:build
     - name: Enable change column type (TiDB 5.0)
       if: ${{ matrix.tidb-version == 'v5.0.3' }}
       run: mysql --host 127.0.0.1 --port 4000 -u root -e 'set @@global.tidb_enable_change_column_type = 1'
     - run: bundle exec rake test:tidb
-    - name: TiDB logs
-      if: failure()
-      run: docker logs tidb
