@@ -23,3 +23,20 @@ ensure
 end
 
 load_tidb_specific_schema
+
+# DIAGNOSTIC (do not merge): report which test leaves rows in contracts.
+module TiDBContractsLeakCheck
+  def after_teardown
+    super
+    conn = ActiveRecord::Base.connection
+    rows = conn.select_rows('SELECT company_id, COUNT(*) FROM contracts GROUP BY company_id ORDER BY company_id')
+    sig = rows.inspect
+    if sig != $tidb_contracts_last
+      $stderr.puts "\n[CONTRACTS-LEAK] after #{self.class.name}##{name}: #{sig} (open_tx=#{conn.open_transactions})"
+      $tidb_contracts_last = sig
+    end
+  rescue StandardError => e
+    $stderr.puts "\n[CONTRACTS-LEAK] check failed after #{self.class.name}##{name}: #{e.class}: #{e.message[0, 120]}"
+  end
+end
+ActiveRecord::TestCase.prepend(TiDBContractsLeakCheck)
