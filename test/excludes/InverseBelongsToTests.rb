@@ -1,0 +1,1 @@
+exclude :test_trying_to_use_inverses_that_dont_exist_should_have_suggestions_for_fix, 'Ruby 3.2 moved did_you_mean suggestions to detailed_message; fixed by rails/rails#45322 in Rails 7.0.4, not in the pingcap/rails fork'
