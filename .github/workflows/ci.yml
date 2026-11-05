@@ -24,10 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         tidb-version:
-          - v5.0.3
-          - v5.1.0
           - v5.1.1
-          - v5.2.0
     name: tidb ${{ matrix.tidb-version }}
     services:
       tidb:
@@ -61,4 +58,12 @@ jobs:
     - name: Enable change column type (TiDB 5.0)
       if: ${{ matrix.tidb-version == 'v5.0.3' }}
       run: mysql --host 127.0.0.1 --port 4000 -u root -e 'set @@global.tidb_enable_change_column_type = 1'
-    - run: bundle exec rake test:tidb
+    - name: Run one leaking test with SQL log (DIAGNOSTIC)
+      env:
+        DIAG_SQL: '1'
+        TEST_FILES_AR: cases/associations/has_many_through_associations_test.rb
+        TESTOPTS: '-v -n /test_associate_with_create_and_valid_options|test_associate_with_create_and_invalid_options/'
+      run: bundle exec rake test:tidb
+    - name: Contracts after the run
+      if: always()
+      run: mysql --host 127.0.0.1 --port 4000 -u root activerecord_unittest -e 'select * from contracts; select id, name from developers order by id desc limit 3'

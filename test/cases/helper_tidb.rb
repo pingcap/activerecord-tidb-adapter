@@ -40,3 +40,23 @@ module TiDBContractsLeakCheck
   end
 end
 ActiveRecord::TestCase.prepend(TiDBContractsLeakCheck)
+
+# DIAGNOSTIC (do not merge): log every SQL statement with the connection it ran on.
+if ENV['DIAG_SQL']
+  ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+    conn = payload[:connection]
+    $stdout.puts "[SQL conn=#{conn&.object_id} tx=#{conn&.open_transactions}] #{payload[:name]}: #{payload[:sql][0, 300]}"
+  end
+  module TiDBDiagBoundaries
+    def before_setup
+      $stdout.puts "[TEST-BEGIN] #{self.class.name}##{name} base_conn=#{ActiveRecord::Base.connection.object_id}"
+      super
+    end
+
+    def after_teardown
+      super
+      $stdout.puts "[TEST-END] #{self.class.name}##{name} base_conn=#{ActiveRecord::Base.connection.object_id}"
+    end
+  end
+  ActiveRecord::TestCase.prepend(TiDBDiagBoundaries)
+end
