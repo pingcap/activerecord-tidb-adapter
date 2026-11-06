@@ -24,10 +24,12 @@ jobs:
       fail-fast: false
       matrix:
         tidb-version:
-          - v5.0.3
-          - v5.1.0
-          - v5.1.1
-          - v5.2.0
+          # Latest patch of each series still in maintenance or extended
+          # support: https://www.pingcap.com/tidb-release-support-policy/
+          - v6.5.12
+          - v7.1.6
+          - v7.5.8
+          - v8.1.2
           - v8.5.8
     name: tidb ${{ matrix.tidb-version }}
     env:
@@ -61,7 +63,4 @@ jobs:
         cat "$RUNNER_TEMP/playground.log"
         exit 1
     - run: bundle exec rake db:tidb:build
-    - name: Enable change column type (TiDB 5.0)
-      if: ${{ matrix.tidb-version == 'v5.0.3' }}
-      run: mysql --host 127.0.0.1 --port 4000 -u root -e 'set @@global.tidb_enable_change_column_type = 1'
     - run: bundle exec rake test:tidb
