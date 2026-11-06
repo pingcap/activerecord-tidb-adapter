@@ -136,10 +136,6 @@ module ActiveRecord
 
       private
 
-      # information_schema.tables lists sequences with table_type 'SEQUENCE'.
-      # They are not tables or views, and TiDB v8.5.6+ denies SHOW INDEX on
-      # them (pingcap/tidb#66535), which breaks the schema cache. Keep them
-      # out of data_sources and data_source_exists?.
       def data_source_sql(name = nil, type: nil)
         sql = super
         return sql if type
