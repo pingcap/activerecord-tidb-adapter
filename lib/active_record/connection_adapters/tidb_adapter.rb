@@ -133,6 +133,15 @@ module ActiveRecord
           comment: field[:Comment].presence
         )
       end
+
+      private
+
+      def data_source_sql(name = nil, type: nil)
+        sql = super
+        return sql if type
+
+        sql.sub('WHERE table_schema = ', "WHERE table_type <> 'SEQUENCE' AND table_schema = ")
+      end
     end
   end
 end

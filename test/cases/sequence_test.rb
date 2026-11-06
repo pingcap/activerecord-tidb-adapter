@@ -36,5 +36,18 @@ module TiDB
       assert_raises(ArgumentError) { TidbOrder.setval(:orders_seq, '1 OR 1=1') }
       assert_raises(TypeError) { TidbOrder.setval(:orders_seq, nil) }
     end
+
+    def test_sequences_are_not_data_sources
+      assert_includes @connection.data_sources, 'tidb_orders'
+      assert_not_includes @connection.data_sources, 'orders_seq'
+      assert_not @connection.data_source_exists?(:orders_seq)
+    end
+
+    def test_schema_cache_skips_sequences
+      cache = ActiveRecord::ConnectionAdapters::SchemaCache.new(@connection)
+      @connection.data_sources.each { |name| cache.add(name) }
+      assert cache.data_source_exists?('tidb_orders')
+      assert_not cache.data_source_exists?('orders_seq')
+    end
   end
 end
