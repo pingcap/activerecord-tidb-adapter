@@ -60,6 +60,31 @@ development:
 
 * demo repo with rails 6.1.4: https://github.com/hooopo/activerecord-tidb-adapter-demo
 
+### TLS
+
+To connect over TLS, set the TLS options in `config/database.yml`. They are passed to the [mysql2](https://github.com/brianmario/mysql2#ssl-options) client as is.
+For example, to connect to TiDB Cloud and verify the server certificate:
+
+```yml
+production:
+  <<: *default
+  host: <%= ENV["TIDB_HOST"] %>
+  username: <%= ENV["TIDB_USER"] %>
+  password: <%= ENV["TIDB_PASSWORD"] %>
+  database: activerecord_tidb_adapter_demo_production
+  ssl_mode: verify_identity
+  # For TiDB Cloud, use the system CA bundle, e.g. /etc/ssl/cert.pem on macOS.
+  # For a self-hosted TiDB, use the CA certificate of the cluster.
+  sslca: /etc/ssl/certs/ca-certificates.crt
+```
+
+| Option | Description |
+| --- | --- |
+| `ssl_mode` | `disabled`, `preferred`, `required`, `verify_ca` or `verify_identity` |
+| `sslca` / `sslcapath` | CA certificate file / directory |
+| `sslcert` / `sslkey` | Client certificate and key, for TLS client authentication |
+| `sslcipher` | Allowed cipher list |
+
 ## TiDB features
 
 **[Sequence](https://docs.pingcap.com/tidb/stable/sql-statement-create-sequence)**
