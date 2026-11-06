@@ -28,15 +28,8 @@ jobs:
           - v5.1.0
           - v5.1.1
           - v5.2.0
+          - v8.5.8
     name: tidb ${{ matrix.tidb-version }}
-    services:
-      tidb:
-        # tiup playground with real PD/TiKV; the binaries are downloaded at
-        # container start, so wait for the port below instead of sleeping.
-        image: hooopo/tidb-playground:${{ matrix.tidb-version }}
-        env:
-          TIDB_VERSION: ${{ matrix.tidb-version }}
-        ports: ["4000:4000"]
     env:
       MYSQL_USER: root
       MYSQL_HOST: 127.0.0.1
@@ -49,13 +42,23 @@ jobs:
       with:
         ruby-version: 3.2
         bundler-cache: true
+    - name: Start TiDB with tiup playground
+      # Run real PD/TiKV/TiDB via the official tiup playground. A standalone
+      # pingcap/tidb image uses unistore, whose lock handling differs from
+      # TiKV and makes the deadlock / lock wait / concurrency tests fail.
+      run: |
+        curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+        echo "$HOME/.tiup/bin" >> "$GITHUB_PATH"
+        nohup "$HOME/.tiup/bin/tiup" playground ${{ matrix.tidb-version }} \
+          --tag ci --tiflash 0 --without-monitor \
+          --db.config "$GITHUB_WORKSPACE/config.toml" > "$RUNNER_TEMP/playground.log" 2>&1 &
     - name: Wait for TiDB
       run: |
         for i in $(seq 1 90); do
           mysql --host 127.0.0.1 --port 4000 -u root -e 'select tidb_version()' && exit 0
           sleep 5
         done
-        docker logs "${{ job.services.tidb.id }}"
+        cat "$RUNNER_TEMP/playground.log"
         exit 1
     - run: bundle exec rake db:tidb:build
     - name: Enable change column type (TiDB 5.0)
